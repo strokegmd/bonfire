@@ -1,0 +1,12 @@
+{
+    "host": "0.0.0.0",
+    "port": 9339,
+    "layer": 1,
+    "max_file_size": 1024,
+    "max_username_length": 16,
+    "min_username_length": 4,
+    "username_characters_allowed": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_",
+    "message_length_limit": 1024,
+    "message_boost_length_limit": 4096,
+    "verify_code_digits": 5
+}
