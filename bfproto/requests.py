@@ -18,6 +18,13 @@ class RequestHelpGetConfig(Request):
     def __init__(self: 'RequestHelpGetConfig', _: ByteStream) -> None:
         pass
 
+class RequestAuthSendCode(Request):
+    ID = 0x95ed005d
+    NAME = 'auth.sendCode'
+
+    def __init__(self: 'RequestAuthSendCode', data: ByteStream) -> None:
+        self.email = data.read_string()
+
 class RequestAuthSignUp(Request):
     ID = 0x8e571749
     NAME = 'auth.signUp'
@@ -27,3 +34,12 @@ class RequestAuthSignUp(Request):
         self.last_name = data.read_string()
         self.email = data.read_string()
         self.code = data.read_string()
+
+class RequestAuthSignIn(Request):
+    ID = 0x8e571749
+    NAME = 'auth.signIn'
+
+    def __init__(self: 'RequestAuthSignIn', data: ByteStream) -> None:
+        self.email = data.read_string()
+        self.code = data.read_string()
+        

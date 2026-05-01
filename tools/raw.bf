@@ -9,12 +9,15 @@ vector count:int items:T = Vector<T>
 
 layer layer:int = Layer
 config max_file_size:int = Config
-user first_name:string last_name:string about:string username:string badge:bool = User
 dialog title:string = Dialog
 chat title:string = Chat
 
 inputUser user_id:int = InputUser
 inputUserName username:string = InputUser
+
+username username:string = Username
+
+user first_name:string last_name:string about:string username:string boost:bool usernames:Vector<Username> = User
 
 // typingActionEmpty = TypingAction
 // typingAction = TypingAction
@@ -24,6 +27,7 @@ inputUserName username:string = InputUser
 help.getLayer = Layer
 help.getConfig = Config
 
+auth.sendCode email:string = Ok
 auth.signUp first_name:string last_name:string email:string code:string = User
 auth.signIn email:string code:string = User
 auth.import key:string = User
@@ -34,8 +38,9 @@ chats.create title:string = Ok
 
 users.get id:Vector<InputUser> = Vector<User>
 
-usernames.check username:string = Ok
-usernames.update username:string = Ok
+account.checkUsername username:string = Ok
+account.updateUsername username:string = Ok
+account.addUsername username:string = Ok
 
 messages.send chat_id:int text:string = Ok
 // messages.setTyping action:TypingAction = Ok

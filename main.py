@@ -17,8 +17,8 @@ async def handle_client(reader, writer) -> None:
         if request.ID == constructor_id:
             request = request(data)
             logger.info(f'Received an {request.NAME} ({hex(request.ID)}) call; {request.get_log_string()}')
-            result = await handler(request)
             
+            result = await handler(request)
             response = ByteStream()
             response.write_int(len(result.serialize()))
             response.bytes += result.serialize()

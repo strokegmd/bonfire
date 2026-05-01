@@ -27,3 +27,6 @@ class ByteStream:
     def write_string(self: 'ByteStream', string: str) -> None:
         self.write_int(len(string))
         self.bytes += string.encode()
+
+    def write_bool(self: 'ByteStream', value: bool) -> None:
+        self.write_int(1 if value else 0)
