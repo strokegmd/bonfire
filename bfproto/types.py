@@ -8,6 +8,12 @@ class Ok(BFObject):
     ID = 0xd4edbe69
     NAME = 'ok'
 
+    def serialize(self: 'Ok') -> bytes:
+        buffer = ByteStream()
+        buffer.write_int(self.ID)
+
+        return buffer.bytes
+
 class Error(BFObject):
     ID = 0xe36f73bb
     NAME = 'error'
@@ -69,10 +75,11 @@ class Username(BFObject):
         return buffer.bytes
 
 class User(BFObject):
-    ID = 0x30bf4f2d
+    ID = 0x8e4df0d6
     NAME = 'user'
 
-    def __init__(self: 'User', first_name: str, last_name: str, about: str, username: str, boost: bool, usernames: list[Username]) -> None:
+    def __init__(self: 'User', user_id: int, first_name: str, last_name: str, about: str, username: str, boost: bool, usernames: list[Username]) -> None:
+        self.user_id = user_id
         self.first_name = first_name
         self.last_name = last_name
         self.about = about
@@ -83,6 +90,7 @@ class User(BFObject):
     def serialize(self: 'User') -> bytes:
         buffer = ByteStream()
         buffer.write_int(self.ID)
+        buffer.write_int(self.user_id)
         buffer.write_string(self.first_name)
         buffer.write_string(self.last_name)
         buffer.write_string(self.about)
@@ -102,7 +110,7 @@ class Authorization(BFObject):
     
     def serialize(self: 'Authorization') -> bytes:
         buffer = ByteStream()
-        buffer.write_string(self.ID)
+        buffer.write_int(self.ID)
         buffer.write_bytes(self.auth_key)
         buffer.write_bytes(self.user.serialize())
 

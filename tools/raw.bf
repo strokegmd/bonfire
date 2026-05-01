@@ -18,7 +18,7 @@ inputUserName username:string = InputUser
 
 username username:string = Username
 
-user first_name:string last_name:string about:string username:string boost:bool usernames:Vector<Username> = User
+user user_id:int first_name:string last_name:string about:string username:string boost:bool usernames:Vector<Username> = User
 
 // typingActionEmpty = TypingAction
 // typingAction = TypingAction
