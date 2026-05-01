@@ -8,6 +8,7 @@ error message:string = Error
 vector count:int items:T = Vector<T>
 
 layer layer:int = Layer
+authorization auth_key:bytes user:User = Authorization
 config max_file_size:int = Config
 dialog title:string = Dialog
 chat title:string = Chat
@@ -28,9 +29,9 @@ help.getLayer = Layer
 help.getConfig = Config
 
 auth.sendCode email:string = Ok
-auth.signUp first_name:string last_name:string email:string code:string = User
-auth.signIn email:string code:string = User
-auth.import key:string = User
+auth.signUp first_name:string last_name:string email:string code:string = Authorization
+auth.signIn email:string code:string = Authorization
+auth.import auth_key:bytes = Authorization
 
 dialogs.get = Vector<Dialog>
 

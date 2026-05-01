@@ -26,7 +26,7 @@ class RequestAuthSendCode(Request):
         self.email = data.read_string()
 
 class RequestAuthSignUp(Request):
-    ID = 0x8e571749
+    ID = 0x72a70570
     NAME = 'auth.signUp'
 
     def __init__(self: 'RequestAuthSignUp', data: ByteStream) -> None:
@@ -36,10 +36,16 @@ class RequestAuthSignUp(Request):
         self.code = data.read_string()
 
 class RequestAuthSignIn(Request):
-    ID = 0x8e571749
+    ID = 0xfddda47
     NAME = 'auth.signIn'
 
     def __init__(self: 'RequestAuthSignIn', data: ByteStream) -> None:
         self.email = data.read_string()
         self.code = data.read_string()
-        
+
+class RequestAuthImport(Request):
+    ID = 0xb30f307d
+    NAME = 'auth.import'
+
+    def __init__(self: 'RequestAuthImport', data: ByteStream) -> None:
+        self.auth_key = data.read_bytes(512)

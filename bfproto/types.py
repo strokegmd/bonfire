@@ -9,7 +9,7 @@ class Ok(BFObject):
     NAME = 'ok'
 
 class Error(BFObject):
-    ID = 0x0
+    ID = 0xe36f73bb
     NAME = 'error'
 
     def __init__(self: 'Error', message: str) -> None:
@@ -36,7 +36,7 @@ class Vector(BFObject):
         buffer.write_int(self.count)
 
         for item in self.items:
-            buffer.bytes += item.serialize()
+            buffer.write_bytes(item.serialize())
         
         return buffer.bytes
 
@@ -85,11 +85,26 @@ class User(BFObject):
         buffer.write_int(self.ID)
         buffer.write_string(self.first_name)
         buffer.write_string(self.last_name)
-        buffer.write_string(self.last_name)
         buffer.write_string(self.about)
         buffer.write_string(self.username)
         buffer.write_bool(self.boost)
-        buffer.bytes += Vector(self.usernames).serialize()
+        buffer.write_bytes(Vector(self.usernames).serialize())
+
+        return buffer.bytes
+
+class Authorization(BFObject):
+    ID = 0x3f8407cf
+    NAME = 'authorization'
+
+    def __init__(self: 'Authorization', auth_key: bytes, user: User) -> None:
+        self.auth_key = auth_key
+        self.user = user
+    
+    def serialize(self: 'Authorization') -> bytes:
+        buffer = ByteStream()
+        buffer.write_string(self.ID)
+        buffer.write_bytes(self.auth_key)
+        buffer.write_bytes(self.user.serialize())
 
         return buffer.bytes
 
@@ -117,6 +132,10 @@ class ErrorEmailInvalid(Error):
     def __init__(self: 'Error') -> None:
         super().__init__('EMAIL_INVALID')
 
-class ErrorVerifyCodeExpired(Error):
+class ErrorStringTooLong(Error):
     def __init__(self: 'Error') -> None:
-        super().__init__('VERIFY_CODE_EXPIRED')
+        super().__init__('STRING_TOO_LONG')
+
+class ErrorStringEmpty(Error):
+    def __init__(self: 'Error') -> None:
+        super().__init__('STRING_EMPTY')

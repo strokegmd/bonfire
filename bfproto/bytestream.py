@@ -21,12 +21,15 @@ class ByteStream:
         length = self.read_int()
         return self.read_bytes(length).decode()
     
+    def write_bytes(self: 'ByteStream', data: bytes) -> None:
+        self.bytes += data
+
     def write_int(self: 'ByteStream', value: int) -> None:
-        self.bytes += struct.pack('<I', value)
-    
+        self.write_bytes(struct.pack('<I', value))
+
     def write_string(self: 'ByteStream', string: str) -> None:
         self.write_int(len(string))
-        self.bytes += string.encode()
+        self.write_bytes(string.encode())
 
     def write_bool(self: 'ByteStream', value: bool) -> None:
         self.write_int(1 if value else 0)

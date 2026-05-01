@@ -7,7 +7,7 @@ from handlers import handlers_map
 
 async def handle_client(reader, writer) -> None:
     length = ByteStream(await reader.read(4)).read_int()
-    if length > 1024:
+    if length > 4096:
         return # TODO: log
 
     data = ByteStream(await reader.read(length))
