@@ -8,15 +8,15 @@ client = pymongo.AsyncMongoClient(config.get_key('mongo_uri'))
 db = client['bonfire']
 
 async def get_next_user_id() -> int:
-    ret = await db.counters.find_one_and_update({'_id': 'user_id'}, {'$inc': {'sequence': 1}}, return_document=True)
+    ret = await db.counters.find_one_and_update({'_id': 'user_id'}, {'$inc': {'sequence': 1}}, upsert=True, return_document=pymongo.ReturnDocument.AFTER)
     return ret['sequence']
 
 async def get_next_chat_id() -> int:
-    ret = await db.counters.find_one_and_update({'_id': 'chat_id'}, {'$inc': {'sequence': 1}}, return_document=True)
+    ret = await db.counters.find_one_and_update({'_id': 'chat_id'}, {'$inc': {'sequence': 1}}, upsert=True, return_document=pymongo.ReturnDocument.AFTER)
     return ret['sequence']
 
 async def get_next_message_id() -> int:
-    ret = await db.counters.find_one_and_update({'_id': 'message_id'}, {'$inc': {'sequence': 1}}, return_document=True)
+    ret = await db.counters.find_one_and_update({'_id': 'message_id'}, {'$inc': {'sequence': 1}}, upsert=True, return_document=pymongo.ReturnDocument.AFTER)
     return ret['sequence']
 
 async def is_email_registered(email: str) -> bool:
@@ -32,10 +32,13 @@ async def is_verify_code_valid(email: str, code: str) -> bool:
     return True if code and code['expiry_after'] > time.time() else False
 
 async def send_verify_code(email: str) -> None:
-    digits = int(config.get_key('verify_code_digits'))
-    verify_code = str(random.randint(10 ** (digits - 1), 10 ** digits - 1))
-    expiry_after = int(time.time()) + int(config.get_key('verify_code_expire_seconds'))
+    if not config.get_key('fixed_verify_code_enabled'):
+        digits = int(config.get_key('verify_code_digits'))
+        verify_code = str(random.randint(10 ** (digits - 1), 10 ** digits - 1))
+    else:
+        verify_code = config.get_key('fixed_verify_code')
 
+    expiry_after = int(time.time()) + int(config.get_key('verify_code_expire_seconds'))
     await db.authcodes.insert_one({'email': email, 'code': verify_code, 'expiry_after': expiry_after})
 
 async def create_user(first_name: str, last_name: str, email: str) -> None:

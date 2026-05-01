@@ -10,5 +10,7 @@
     "message_length_limit": 1024,
     "message_boost_length_limit": 4096,
     "verify_code_digits": 5,
-    "verify_code_expire_seconds": 120
+    "verify_code_expire_seconds": 120,
+    "fixed_verify_code_enabled": true,
+    "fixed_verify_code": "22222"
 }
